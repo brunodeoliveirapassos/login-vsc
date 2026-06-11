@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Confirmação da Compra - Viação São Cristóvão</title>
+  <link rel="stylesheet" href="confirm.css">
+</head>
+<body>
+  <main class="wrapper">
+    <div class="card">
+      <h1>Confirmação de Passagem</h1>
+      <div id="noBooking" class="empty">Nenhuma reserva encontrada.</div>
+
+      <div id="bookingCard" class="booking" hidden>
+        <div class="info">
+          <p><strong>Origem:</strong> <span id="bOrigin"></span></p>
+          <p><strong>Destino:</strong> <span id="bDestination"></span></p>
+          <p><strong>Data:</strong> <span id="bDate"></span> <strong>Hora:</strong> <span id="bTime"></span></p>
+          <p><strong>Classe:</strong> <span id="bClass"></span> <strong>Poltrona:</strong> <span id="bSeat"></span></p>
+          <p><strong>Preço:</strong> R$ <span id="bPrice"></span></p>
+        </div>
+
+        <div class="qr">
+          <h2>QR Code da Reserva</h2>
+          <img id="qrImg" alt="QR code da reserva">
+        </div>
+
+        <div class="actions">
+          <button id="printBtn">Imprimir Bilhete</button>
+          <button id="downloadBtn">Abrir QR (Salvar)</button>
+          <button id="embedBtn">Incorporar QR</button>
+        </div>
+      </div>
+      
+      <div id="embedArea" class="embed-area" hidden>
+        <h3>Código para incorporação</h3>
+        <textarea id="embedCode" rows="4" readonly></textarea>
+        <div class="embed-actions">
+          <button id="copyEmbed">Copiar código</button>
+          <button id="closeEmbed">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="confirm.js"></script>
+</body>
+</html>

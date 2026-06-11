@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "email": "admin@viacao.com",
+    "password": "123456",
+    "name": "Administrador"
+  },
+  {
+    "id": 2,
+    "email": "motorista@viacao.com",
+    "password": "senha123",
+    "name": "Motorista Teste"
+  },
+  {
+    "id": 3,
+    "email": "user@example.com",
+    "password": "123456",
+    "name": "Usuário Teste"
+  }
+]

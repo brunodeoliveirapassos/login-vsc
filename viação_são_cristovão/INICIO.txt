@@ -1,0 +1,98 @@
+🚀 INICIO RÁPIDO - SISTEMA DE AUTENTICAÇÃO
+
+═══════════════════════════════════════════════════════════════════════════════
+
+1️⃣  ABRA O TERMINAL/POWERSHELL
+
+2️⃣  NAVEGUE PARA A PASTA DO SERVIDOR:
+    cd c:\Users\bruno\Documents\login\viação_são_cristovão\server
+
+3️⃣  INICIE O SERVIDOR:
+    node server.js
+
+    ✅ Você verá: "Servidor rodando em http://localhost:3000"
+
+4️⃣  ABRA NO NAVEGADOR:
+    ├─ GUIA.html          ← Guia visual interativo (COMECE AQUI!)
+    ├─ login.html         ← Página de login
+    └─ recover.html       ← Recuperação de senha
+
+5️⃣  TESTE COM ESSAS CREDENCIAIS:
+    Email: admin@viacao.com
+    Senha: 123456
+
+═══════════════════════════════════════════════════════════════════════════════
+
+📁 DOCUMENTAÇÃO RÁPIDA:
+
+• GUIA.html          → Passo a passo visual (comece aqui!)
+• RESUMO.txt         → Resumo executivo completo
+• IMPLEMENTACAO.md   → Detalhes técnicos
+• TESTES.txt         → Guia completo de testes
+• server/README.md   → Documentação da API
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🎯 FLUXO RÁPIDO:
+
+1. LOGIN:
+   ├─ Email: admin@viacao.com
+   ├─ Senha: 123456
+   └─ ✅ Login bem-sucedido!
+
+2. RECUPERAÇÃO:
+   ├─ Clique "Esqueceu sua senha?"
+   ├─ Email: admin@viacao.com
+   ├─ Código Demo: 123456 (mostrado na mensagem)
+   └─ Redireciona para reset automaticamente
+
+3. RESET:
+   ├─ Código: 123456
+   ├─ Nova Senha: novaSenha123
+   └─ ✅ Senha atualizada!
+
+═══════════════════════════════════════════════════════════════════════════════
+
+✨ FEATURES PRINCIPAIS:
+
+✅ 3 páginas de autenticação (login, recuperação, reset)
+✅ 3 endpoints API (login, recover, reset)
+✅ Design glassmorphism moderno
+✅ 100% responsivo (mobile, tablet, desktop)
+✅ Validação em tempo real
+✅ Password toggle (mostrar/ocultar)
+✅ Remember me (localStorage)
+✅ Código com expiração (15 minutos)
+✅ Slideshow de fotos dinâmico
+✅ Animações suaves
+✅ 7 melhorias de UX integradas
+
+═══════════════════════════════════════════════════════════════════════════════
+
+⚠️  IMPORTANTE:
+
+Este sistema é APENAS PARA DEMONSTRAÇÃO!
+Não use em produção sem criptografar senhas, usar banco de dados real, 
+implementar HTTPS, rate limiting, JWT, e segurança adequada.
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🆘 PROBLEMAS?
+
+1. Servidor não inicia?
+   → Verifique: node server.js (na pasta server/)
+
+2. CORS error?
+   → Verifique: Servidor está em http://localhost:3000
+
+3. Imagens não aparecem?
+   → Verifique: Pasta imagens/ existe com as fotos
+
+4. Código não funciona?
+   → Copie exatamente (sensível a maiúsculas/minúsculas)
+   → Código expira em 15 minutos
+
+═══════════════════════════════════════════════════════════════════════════════
+
+Desenvolvido para: Viação São Cristóvão
+Status: ✅ PRONTO PARA USO

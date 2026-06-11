@@ -1,0 +1,21 @@
+*{box-sizing:border-box;font-family:Segoe UI,Arial,Helvetica,sans-serif}
+body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#071021,#081525);color:#e6eef6}
+.wrapper{width:860px;max-width:95%;padding:20px}
+.card{background:rgba(255,255,255,0.04);padding:24px;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,0.6)}
+h1{margin:0 0 16px;color:#fff}
+.booking{display:flex;gap:24px;align-items:flex-start}
+.info{flex:1}
+.info p{margin:6px 0;color:#cfe7d6}
+.qr{width:260px;text-align:center}
+.qr img{width:220px;height:220px;border-radius:8px;background:#fff;padding:8px}
+.actions{margin-top:10px;display:flex;gap:8px}
+button{background:#2e8b57;color:#fff;padding:10px 12px;border-radius:8px;border:none;cursor:pointer}
+.empty{color:#ffdfdf}
+
+.embed-area{margin-top:16px;background:rgba(255,255,255,0.02);padding:12px;border-radius:8px}
+.embed-area h3{margin:0 0 8px 0;color:#dfffe3}
+.embed-area textarea{width:100%;padding:10px;border-radius:6px;border:1px solid #2b3440;background:#07121a;color:#e6f7e9}
+.embed-actions{margin-top:8px;display:flex;gap:8px}
+.embed-actions button{background:#1f6f3a}
+
+@media (max-width:720px){.booking{flex-direction:column;align-items:center}.qr{width:100%}}

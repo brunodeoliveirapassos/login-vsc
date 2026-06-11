@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Compra de Passagem - Viação São Cristóvão</title>
+  <link rel="stylesheet" href="purchase.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Comprar Passagem</h1>
+
+    <form id="bookingForm">
+      <div class="field-row">
+        <label>Origem
+          <select id="origin">
+            <option>São Paulo</option>
+            <option>Rio de Janeiro</option>
+            <option>Jundiai</option>
+            <option>Lavras</option>
+            <option>Divinopolis</option>
+            <option>Oliveira</option>
+            <option>Santo Antonio do Amparo</option>
+            <option>Carmo da Mata</option>
+            <option>Perdões</option>
+            <option>Ribeirão Vermelho</option>
+            <option>Itutinga</option>
+            <option>Itumirim</option>
+            <option>Nazerno</option>
+            <option>Carrancas</option>
+            <option>São João Del Rei</option>
+            <option>Ibituruna</option>
+            <option>Bom Sucesso</option>
+            <option>Campo Belo</option>
+            <option>Cana Verde</option>
+            <option>Abaeté</option>
+            <option>MariLândia</option>
+            <option>Ritapolis</option>
+            <option>São Tiago</option>
+            <option>Morro do Ferro</option>
+            <option>Quartel Geral</option>
+            <option>Dores do Indaia</option>
+            <option>Pedra do Indaia</option>
+            <option>Bom Despacho</option>
+            <option>Lagoa da Prata</option>
+            <option>Moema</option>
+            <option>Santo Antônio do Monte</option>
+            <option>Itapecerica</option>
+            <option>Beira-Rio</option>
+            <option>Pedra Roxa</option>
+            <option>Cachoeira do Caixão</option>
+            <option>Guarita</option>
+          </select>
+        </label>
+
+        <label>Destino
+          <select id="destination">
+            <option>Rio de Janeiro</option>
+            <option>São Paulo</option>
+            <option>Jundiai</option>
+            <option>Lavras</option>
+            <option>Divinopolis</option>
+            <option>Oliveira</option>
+            <option>Santo Antonio do Amparo</option>
+            <option>Carmo da Mata</option>
+            <option>Perdões</option>
+            <option>Ribeirão Vermelho</option>
+            <option>Itutinga</option>
+            <option>Itumirim</option>
+            <option>Nazerno</option>
+            <option>Carrancas</option>
+            <option>São João Del Rei</option>
+            <option>Ibituruna</option>
+            <option>Bom Sucesso</option>
+            <option>Campo Belo</option>
+            <option>Cana Verde</option>
+            <option>Abaeté</option>
+            <option>MariLândia</option>
+            <option>Ritapolis</option>
+            <option>São Tiago</option>
+            <option>Morro do Ferro</option>
+            <option>Quartel Geral</option>
+            <option>Dores do Indaia</option>
+            <option>Pedra do Indaia</option>
+            <option>Bom Despacho</option>
+            <option>Lagoa da Prata</option>
+            <option>Moema</option>
+            <option>Santo Antônio do Monte</option>
+            <option>Itapecerica</option>
+            <option>Beira-Rio</option>
+            <option>Pedra Roxa</option>
+            <option>Cachoeira do Caixão</option>
+            <option>Guarita</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="field-row">
+        <label>Data
+          <input type="date" id="date" required>
+        </label>
+
+        <label>Hora
+          <input type="time" id="time" required>
+        </label>
+      </div>
+
+      <div class="field-row class-row">
+        <label><input type="radio" name="busClass" value="convencional" checked> Convencional</label>
+        <label><input type="radio" name="busClass" value="executivo"> Executivo</label>
+      </div>
+      <div class="seatmap-section">
+        <h2>Selecione a poltrona</h2>
+        <div id="seatMap" class="seatmap" aria-label="Mapa de poltronas"></div>
+        <div class="legend">
+          <span class="seat legend-available"></span> Disponível
+          <span class="seat legend-selected"></span> Selecionada
+        </div>
+      </div>
+
+      <div class="summary">
+        <p id="selectedSeat">Poltrona: —</p>
+        <p id="price">Preço: R$ 0,00</p>
+      </div>
+
+      <div class="actions">
+        <button type="button" id="confirm">Confirmar Compra</button>
+      </div>
+    </form>
+
+    <div id="message" class="message" role="status"></div>
+  </div>
+
+  <script src="purchase.js"></script>
+</body>
+</html>

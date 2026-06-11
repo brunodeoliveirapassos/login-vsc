@@ -1,0 +1,430 @@
+🧪 GUIA DE TESTE - SISTEMA DE AUTENTICAÇÃO
+
+═══════════════════════════════════════════════════════════════════════════════
+
+ANTES DE COMEÇAR:
+1. Certifique-se que Node.js está instalado (node --version)
+2. Abra PowerShell/Terminal na pasta server/
+3. Execute: node server.js
+4. Você verá: "Servidor rodando em http://localhost:3000"
+
+═══════════════════════════════════════════════════════════════════════════════
+
+✅ TESTE 1: LOGIN COM CREDENCIAIS CORRETAS
+─────────────────────────────────────────────────────────────────────────────
+
+PASSO 1: Abra login.html no navegador
+
+PASSO 2: Preencha os campos:
+  ├─ Email: admin@viacao.com
+  └─ Senha: 123456
+
+PASSO 3: Clique em "LOGIN"
+
+RESULTADO ESPERADO:
+  ✓ Mensagem verde: "Login bem-sucedido!"
+  ✓ Botão mostra spinner enquanto processa
+  ✓ Sem erro no console (F12)
+
+═══════════════════════════════════════════════════════════════════════════════
+
+❌ TESTE 2: LOGIN COM EMAIL ERRADO
+─────────────────────────────────────────────────────────────────────────────
+
+PASSO 1: Abra login.html no navegador
+
+PASSO 2: Preencha os campos:
+  ├─ Email: errado@example.com
+  └─ Senha: 123456
+
+PASSO 3: Clique em "LOGIN"
+
+RESULTADO ESPERADO:
+  ✓ Mensagem vermelha: "Email ou senha incorretos."
+  ✓ Botão volta ao estado normal
+  ✓ Campo de email fica com borda vermelha
+
+═══════════════════════════════════════════════════════════════════════════════
+
+❌ TESTE 3: LOGIN COM SENHA ERRADA
+─────────────────────────────────────────────────────────────────────────────
+
+PASSO 1: Abra login.html no navegador
+
+PASSO 2: Preencha os campos:
+  ├─ Email: admin@viacao.com
+  └─ Senha: senhaerrada
+
+PASSO 3: Clique em "LOGIN"
+
+RESULTADO ESPERADO:
+  ✓ Mensagem vermelha: "Email ou senha incorretos."
+  ✓ Campo de senha fica com borda vermelha
+  ✓ Sem acesso ao sistema
+
+═══════════════════════════════════════════════════════════════════════════════
+
+💾 TESTE 4: REMEMBER ME (LEMBRAR-ME)
+─────────────────────────────────────────────────────────────────────────────
+
+PASSO 1: Abra login.html no navegador
+
+PASSO 2: Preencha:
+  ├─ Email: motorista@viacao.com
+  ├─ Senha: senha123
+  └─ ☑ Marque "Lembrar-me"
+
+PASSO 3: Clique em "LOGIN"
+
+PASSO 4: Recarregue a página (F5)
+
+RESULTADO ESPERADO:
+  ✓ Campo de email ainda contém: motorista@viacao.com
+  ✓ Checkbox "Lembrar-me" continua marcado
+  ✓ Email foi salvo no localStorage
+
+═══════════════════════════════════════════════════════════════════════════════
+
+👁️  TESTE 5: PASSWORD TOGGLE (MOSTRAR/OCULTAR SENHA)
+─────────────────────────────────────────────────────────────────────────────
+
+PASSO 1: Abra login.html no navegador
+
+PASSO 2: Preencha o campo de senha: 123456
+  └─ Note que a senha fica mascarada (●●●●●●)
+
+PASSO 3: Clique no ícone de olho (👁️) no campo de senha
+
+RESULTADO ESPERADO:
+  ✓ Ícone muda para olho fechado (🙈)
+  ✓ Senha fica visível: 123456
+  ✓ Tipo do input muda de "password" para "text"
+
+PASSO 4: Clique novamente no ícone (🙈)
+
+RESULTADO ESPERADO:
+  ✓ Ícone volta para olho aberto (👁️)
+  ✓ Senha volta a ficar mascarada (●●●●●●)
+
+═══════════════════════════════════════════════════════════════════════════════
+
+✉️  TESTE 6: VALIDAÇÃO DE EMAIL EM TEMPO REAL
+─────────────────────────────────────────────────────────────────────────────
+
+PASSO 1: Abra login.html no navegador
+
+PASSO 2: Digite no campo de email: teste
+
+RESULTADO ESPERADO:
+  ✓ Campo fica com borda vermelha (aria-invalid="true")
+  ✓ Validação ocorre em tempo real (sem clicar em botão)
+
+PASSO 3: Complete com: teste@example.com
+
+RESULTADO ESPERADO:
+  ✓ Campo volta com borda normal
+  ✓ Email agora é válido
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🔄 TESTE 7: RECUPERAÇÃO DE SENHA - PASSO 1
+─────────────────────────────────────────────────────────────────────────────
+
+PASSO 1: Abra login.html e clique em "Esqueceu sua senha?"
+
+PASSO 2: Você será redirecionado para recover.html
+
+PASSO 3: Preencha:
+  └─ Email: admin@viacao.com
+
+PASSO 4: Clique em "Enviar Código"
+
+RESULTADO ESPERADO:
+  ✓ Mensagem verde aparece
+  ✓ Mensagem contém: "Código enviado para admin@viacao.com. (Demo: XXXXXX)"
+  ✓ Após 2 segundos, redireciona para reset.html automaticamente
+
+⚠️  IMPORTANTE: Copie o código de 6 dígitos que aparece na mensagem!
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🔐 TESTE 8: RECUPERAÇÃO COM EMAIL INVÁLIDO
+─────────────────────────────────────────────────────────────────────────────
+
+PASSO 1: Abra recover.html no navegador
+
+PASSO 2: Preencha:
+  └─ Email: naoexiste@example.com
+
+PASSO 3: Clique em "Enviar Código"
+
+RESULTADO ESPERADO:
+  ✓ Mensagem vermelha: "Email não encontrado."
+  ✓ NÃO redireciona para reset.html
+  ✓ Botão volta ao estado normal
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🔑 TESTE 9: RESET DE SENHA - PASSO 1 (CÓDIGO VÁLIDO)
+─────────────────────────────────────────────────────────────────────────────
+
+PASSO 1: Execute a recuperação (Teste 7) e copie o código
+
+PASSO 2: Você será redirecionado para reset.html automaticamente
+
+PASSO 3: Preencha os campos:
+  ├─ Código: (Cole o código de 6 dígitos)
+  └─ Nova Senha: novaSenha123
+
+PASSO 4: Clique em "Resetar Senha"
+
+RESULTADO ESPERADO:
+  ✓ Mensagem verde: "Senha resetada com sucesso!"
+  ✓ Após 2 segundos, redireciona para login.html
+  ✓ Senha antiga (123456) NÃO funciona mais
+  ✓ Nova senha (novaSenha123) funciona
+
+═══════════════════════════════════════════════════════════════════════════════
+
+❌ TESTE 10: RESET DE SENHA - CÓDIGO INVÁLIDO
+─────────────────────────────────────────────────────────────────────────────
+
+PASSO 1: Abra reset.html no navegador
+
+PASSO 2: Preencha os campos:
+  ├─ Código: 999999
+  └─ Nova Senha: novaSenha123
+
+PASSO 3: Clique em "Resetar Senha"
+
+RESULTADO ESPERADO:
+  ✓ Mensagem vermelha: "Código inválido."
+  ✓ NÃO redireciona para login.html
+  ✓ Senha NÃO é alterada
+
+═══════════════════════════════════════════════════════════════════════════════
+
+❌ TESTE 11: RESET DE SENHA - CÓDIGO EXPIRADO
+─────────────────────────────────────────────────────────────────────────────
+
+PASSO 1: Solicite um código de recuperação
+
+PASSO 2: Aguarde 15 minutos (ou edite server.js para testar com menos tempo)
+
+PASSO 3: Tente usar o código no reset.html
+
+RESULTADO ESPERADO:
+  ✓ Mensagem vermelha: "Código expirado. Solicite um novo código."
+  ✓ Código já foi removido do servidor
+
+═══════════════════════════════════════════════════════════════════════════════
+
+❌ TESTE 12: RESET DE SENHA - SENHA MUITO CURTA
+─────────────────────────────────────────────────────────────────────────────
+
+PASSO 1: Execute a recuperação e obtenha o código
+
+PASSO 2: Em reset.html, preencha:
+  ├─ Código: (código válido)
+  └─ Nova Senha: 123
+
+PASSO 3: Clique em "Resetar Senha"
+
+RESULTADO ESPERADO:
+  ✓ Mensagem vermelha: "A senha deve ter no mínimo 6 caracteres."
+  ✓ Senha NÃO é alterada
+  ✓ Botão volta ao estado normal
+
+═══════════════════════════════════════════════════════════════════════════════
+
+📱 TESTE 13: RESPONSIVIDADE - MOBILE
+─────────────────────────────────────────────────────────────────────────────
+
+PASSO 1: Abra qualquer página no navegador
+
+PASSO 2: Abra DevTools (F12)
+
+PASSO 3: Clique em "Toggle device toolbar" (Ctrl+Shift+M)
+
+PASSO 4: Selecione um dispositivo móvel (ex: iPhone 12)
+
+PASSO 5: Teste todos os campos e funcionalidades
+
+RESULTADO ESPERADO:
+  ✓ Layout é responsivo (não há scroll horizontal)
+  ✓ Todos os botões são clicáveis
+  ✓ Texto é legível
+  ✓ Inputs funcionam normalmente
+  ✓ Validação acontece em tempo real
+
+═══════════════════════════════════════════════════════════════════════════════
+
+📱 TESTE 14: RESPONSIVIDADE - TABLET
+─────────────────────────────────────────────────────────────────────────────
+
+PASSO 1: Em DevTools, selecione iPad ou tablet genérico
+
+PASSO 2: Teste os mesmos passos do Teste 13
+
+RESULTADO ESPERADO:
+  ✓ Layout adapta para 1024px de width
+  ✓ Elementos bem espaçados
+  ✓ Texto legível e bem proporcional
+  ✓ Nenhum elemento sobreposto
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🎨 TESTE 15: DESIGN VISUAL
+─────────────────────────────────────────────────────────────────────────────
+
+PASSO 1: Abra qualquer página
+
+PASSO 2: Verifique visualmente:
+
+RESULTADO ESPERADO - Design:
+  ✓ Fundo tem efeito blur (glassmorphism)
+  ✓ Slideshow de fotos (muda a cada 4.5s)
+  ✓ Cores púrpura/azul/vermelho consistentes
+  ✓ Botão com gradiente vermelho
+  ✓ Logo circulär (125x125px)
+
+RESULTADO ESPERADO - Animações:
+  ✓ Formulário entra com slide-in suave
+  ✓ Hover no botão muda cor e move para cima
+  ✓ Spinner gira durante carregamento
+  ✓ Transitions suaves em todos os elementos
+
+RESULTADO ESPERADO - Icons:
+  ✓ Email icon no campo de email
+  ✓ Lock icon no campo de senha
+  ✓ Key icon no campo de código
+  ✓ Eye icon no password toggle
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🔍 TESTE 16: VALIDAÇÃO NO CONSOLE
+─────────────────────────────────────────────────────────────────────────────
+
+PASSO 1: Abra DevTools (F12) → Aba "Console"
+
+PASSO 2: Faça login com credenciais corretas
+
+PASSO 3: Veja o console do servidor (terminal)
+
+RESULTADO ESPERADO - Console do Navegador:
+  ✓ Nenhum erro (vermelho)
+  ✓ Nenhum warning importante
+
+RESULTADO ESPERADO - Console do Servidor:
+  ✓ "Código de recuperação para admin@viacao.com: XXXXXX"
+  ✓ Logs de operações
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🔗 TESTE 17: LINKS DE NAVEGAÇÃO
+─────────────────────────────────────────────────────────────────────────────
+
+PASSO 1: login.html
+  └─ Clique em "Esqueceu sua senha?" → Vai para recover.html ✓
+
+PASSO 2: recover.html
+  └─ Clique em "Voltar ao login" → Vai para login.html ✓
+
+PASSO 3: reset.html
+  └─ Clique em "Voltar ao login" → Vai para login.html ✓
+
+RESULTADO ESPERADO:
+  ✓ Todos os links funcionam
+  ✓ Navegação é suave
+  ✓ Não há erros 404
+
+═══════════════════════════════════════════════════════════════════════════════
+
+📊 TESTE 18: FLUXO COMPLETO (Integração)
+─────────────────────────────────────────────────────────────────────────────
+
+PASSO 1: Inicie o servidor (node server.js)
+
+PASSO 2: Abra login.html
+
+PASSO 3: Faça login com: motorista@viacao.com / senha123
+  └─ ✓ Sucesso esperado
+
+PASSO 4: Recarregue a página (F5)
+
+PASSO 5: Clique em "Esqueceu sua senha?"
+  └─ ✓ Vai para recover.html
+
+PASSO 6: Insira email: motorista@viacao.com
+  └─ ✓ Código gerado e mostrado
+
+PASSO 7: Copie o código e continue (você redireciona para reset.html)
+
+PASSO 8: Insira código + nova senha (ex: novaSenha456)
+  └─ ✓ Mensagem de sucesso
+
+PASSO 9: Redireciona para login.html automaticamente
+
+PASSO 10: Tente fazer login com a OLD senha
+  └─ ✗ "Email ou senha incorretos." (esperado)
+
+PASSO 11: Tente fazer login com a NEW senha
+  └─ ✓ "Login bem-sucedido!" (esperado)
+
+RESULTADO ESPERADO:
+  ✓ Fluxo completo funcionado
+  ✓ Senha atualizada com sucesso
+  ✓ Sem erros ou avisos
+  ✓ Navegação suave
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🎯 CHECKLIST DE TESTES
+─────────────────────────────────────────────────────────────────────────────
+
+Testes Funcionais:
+  ☐ Login com credenciais corretas
+  ☐ Login com email errado
+  ☐ Login com senha errada
+  ☐ Remember me salva email
+  ☐ Password toggle funciona
+  ☐ Validação de email em tempo real
+  ☐ Recuperação solicita código
+  ☐ Recuperação valida email
+  ☐ Reset atualiza senha
+  ☐ Reset valida código
+  ☐ Reset valida tamanho de senha
+  ☐ Código expira em 15 minutos
+
+Testes de UX:
+  ☐ Spinner aparece ao enviar
+  ☐ Mensagens de erro aparecem
+  ☐ Mensagens de sucesso aparecem
+  ☐ Animações são suaves
+  ☐ Design é responsivo
+  ☐ Layout é bonito
+
+Testes de Navegação:
+  ☐ Links funcionam
+  ☐ Redirecionamentos ocorrem
+  ☐ Sem erros 404
+
+═══════════════════════════════════════════════════════════════════════════════
+
+✅ SE TODOS OS TESTES PASSAREM:
+
+🎉 PARABÉNS! O Sistema de Autenticação está 100% funcional!
+
+═══════════════════════════════════════════════════════════════════════════════
+
+❓ SE ALGUM TESTE FALHAR:
+
+1. Verifique console do navegador (F12)
+2. Verifique console do servidor (terminal)
+3. Verifique se servidor está rodando em http://localhost:3000
+4. Verifique se pasta imagens/ existe
+5. Consulte GUIA.html para mais detalhes
+
+═══════════════════════════════════════════════════════════════════════════════
+
+Desenvolvido para: Viação São Cristóvão | Versão 1.0 | 2024

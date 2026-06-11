@@ -1,0 +1,42 @@
+:root{
+  --bg:#0f1724;
+  --card:#ffffff10;
+  --accent:#4caf50;
+  --muted:#cbd5e1;
+  --seat-size: 42px;
+  --aisle-width: 28px;
+  --gap: 12px;
+}
+*{box-sizing:border-box;font-family:Segoe UI,Arial,Helvetica,sans-serif}
+body{margin:0;min-height:100vh;background:linear-gradient(180deg,#071021 0%,#0b1220 100%);color:var(--muted);display:flex;align-items:flex-start;justify-content:center;padding:40px}
+.container{width:980px;max-width:95%;background:var(--card);backdrop-filter:blur(6px);border-radius:12px;padding:24px;box-shadow:0 8px 30px rgba(2,6,23,0.6)}
+h1{color:#fff;margin:0 0 12px 0}
+.field-row{display:flex;gap:16px;margin-bottom:12px}
+.field-row label{flex:1;display:flex;flex-direction:column;color:var(--muted);font-size:14px}
+select,input[type=date],input[type=time]{padding:8px;border-radius:6px;border:1px solid #2b3440;background:#0b1622;color:#fff}
+.class-row{gap:24px;align-items:center}
+.seatmap-section{margin-top:12px;display:flex;justify-content:center}
+.seatmap{background:linear-gradient(180deg,#08121a,#071021);padding:16px;border-radius:8px;display:inline-block}
+.seat-row{display:grid;grid-template-columns:var(--seat-size) var(--seat-size) var(--aisle-width) var(--seat-size) var(--seat-size);column-gap:var(--gap);align-items:center;justify-content:flex-start;margin-bottom:8px}
+.seat{width:var(--seat-size);height:var(--seat-size);border-radius:8px;background:#26313b;display:inline-flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;user-select:none;border:2px solid transparent}
+.seat.available{background:#2f3b47}
+.seat.selected{background:var(--accent);border-color:#2a7b3e}
+.seat.disabled{opacity:0.35;cursor:not-allowed}
+.aisle{width:28px}
+.legend{margin-top:8px;color:var(--muted);display:flex;gap:12px;align-items:center}
+.legend .seat{width:18px;height:18px;border-radius:4px;margin:0}
+.summary{margin-top:12px;color:#fff}
+.actions{margin-top:14px}
+#confirm{background:var(--accent);color:#fff;padding:10px 14px;border-radius:8px;border:none;cursor:pointer}
+.message{margin-top:12px;padding:10px;border-radius:8px}
+.message.success{background:#083618;color:#9ff1b8}
+.message.error{background:#3a1313;color:#ffb3b3}
+
+@media (max-width:920px){
+  :root{ --seat-size:36px; --aisle-width:20px; --gap:10px; }
+}
+
+@media (max-width:640px){
+  .field-row{flex-direction:column}
+  :root{ --seat-size:32px; --aisle-width:18px; --gap:8px; }
+}

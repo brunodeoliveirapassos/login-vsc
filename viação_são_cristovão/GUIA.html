@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Autenticação - Guia</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 20px;
+            min-height: 100vh;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .card h2::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: #667eea;
+            border-radius: 2px;
+        }
+        .card p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+        }
+        .steps {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        .step {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 12px;
+        }
+        .step:last-child {
+            margin-bottom: 0;
+        }
+        .step-number {
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        .step p {
+            margin: 0;
+            display: flex;
+            align-items: center;
+        }
+        .btn-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+            border: 2px solid #667eea;
+        }
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+            font-size: 0.9em;
+        }
+        .info-box strong {
+            color: #667eea;
+        }
+        .credentials {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+        table th {
+            background: #f5f5f5;
+            padding: 10px;
+            text-align: left;
+            color: #667eea;
+            font-weight: 600;
+        }
+        table td {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .code {
+            background: #f5f5f5;
+            padding: 12px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        .warning {
+            background: #ffebee;
+            border-left: 4px solid #f44336;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+            color: #c62828;
+        }
+        .success {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+            color: #2e7d32;
+        }
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+        .emoji {
+            font-size: 1.2em;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚌 Sistema de Autenticação - Viação São Cristóvão</h1>
+
+        <div class="grid">
+            <!-- Card 1: Login -->
+            <div class="card">
+                <h2><span class="emoji">🔑</span>Login</h2>
+                <p>Acesse sua conta com email e senha</p>
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <p>Insira seu email cadastrado</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <p>Digite sua senha</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <p>Clique em LOGIN para acessar</p>
+                    </div>
+                </div>
+                <div class="success">
+                    <strong>✓ Dica:</strong> Marque "Lembrar-me" para salvar seu email
+                </div>
+                <div class="btn-group">
+                    <a href="login.html" class="btn btn-primary">Ir para Login</a>
+                </div>
+            </div>
+
+            <!-- Card 2: Recuperação -->
+            <div class="card">
+                <h2><span class="emoji">🔄</span>Recuperação de Senha</h2>
+                <p>Solicite um código de recuperação</p>
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <p>Clique em "Esqueceu sua senha?"</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <p>Insira seu email cadastrado</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <p>Receba código de 6 dígitos</p>
+                    </div>
+                </div>
+                <div class="info-box">
+                    <strong>ℹ️ Demo:</strong> O código é exibido na mensagem de sucesso
+                </div>
+                <div class="btn-group">
+                    <a href="recover.html" class="btn btn-primary">Ir para Recuperação</a>
+                </div>
+            </div>
+
+            <!-- Card 3: Reset -->
+            <div class="card">
+                <h2><span class="emoji">🔐</span>Resetar Senha</h2>
+                <p>Defina uma nova senha usando o código</p>
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <p>Insira o código recebido</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <p>Digite sua nova senha (6+ caracteres)</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <p>Clique em "Resetar Senha"</p>
+                    </div>
+                </div>
+                <div class="success">
+                    <strong>✓ Sucesso:</strong> Será redirecionado para login automático
+                </div>
+                <div class="btn-group">
+                    <a href="reset.html" class="btn btn-primary">Ir para Reset</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Credenciais de Teste -->
+        <div class="card" style="grid-column: 1 / -1;">
+            <h2><span class="emoji">🧪</span>Credenciais de Teste</h2>
+            <p>Use uma das seguintes contas para testar o sistema:</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Email</th>
+                        <th>Senha</th>
+                        <th>Nome</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>admin@viacao.com</code></td>
+                        <td><code>123456</code></td>
+                        <td>Administrador</td>
+                    </tr>
+                    <tr>
+                        <td><code>motorista@viacao.com</code></td>
+                        <td><code>senha123</code></td>
+                        <td>Motorista Teste</td>
+                    </tr>
+                    <tr>
+                        <td><code>user@example.com</code></td>
+                        <td><code>123456</code></td>
+                        <td>Usuário Teste</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Guia de Uso -->
+        <div class="card" style="grid-column: 1 / -1;">
+            <h2><span class="emoji">📋</span>Guia de Uso - Passo a Passo</h2>
+            
+            <h3 style="margin-top: 20px; color: #667eea;">1️⃣ Iniciando o Servidor</h3>
+            <p>Abra um terminal/PowerShell na pasta <code>server/</code> e execute:</p>
+            <div class="code">node server.js</div>
+            <p>Você deve ver a mensagem:</p>
+            <div class="code">Servidor rodando em http://localhost:3000</div>
+
+            <h3 style="margin-top: 20px; color: #667eea;">2️⃣ Primeiro Login</h3>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <p>Abra <code>login.html</code> no navegador</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <p>Use email: <code>admin@viacao.com</code> e senha: <code>123456</code></p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <p>Clique em LOGIN</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <p>Se correto, verá mensagem de sucesso</p>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 20px; color: #667eea;">3️⃣ Testar Recuperação</h3>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <p>Clique em "Esqueceu sua senha?"</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <p>Insira <code>admin@viacao.com</code></p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <p>Clique em "Enviar Código"</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <p>O código aparecerá na mensagem (ex: Demo: 123456)</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <p>Será redirecionado para página de reset</p>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 20px; color: #667eea;">4️⃣ Resetar Senha</h3>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <p>Insira o código de 6 dígitos</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <p>Digite uma nova senha (mínimo 6 caracteres)</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <p>Clique em "Resetar Senha"</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <p>Se correto, será redirecionado para login</p>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 20px; color: #667eea;">5️⃣ Fazer Login com Nova Senha</h3>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <p>Agora use a nova senha que você criou</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <p>O email continua o mesmo (admin@viacao.com)</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <p>Clique em LOGIN para acessar</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Características -->
+        <div class="card" style="grid-column: 1 / -1;">
+            <h2><span class="emoji">⭐</span>Características do Sistema</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+                <div>
+                    <h4 style="color: #667eea; margin-bottom: 10px;">Design & UX</h4>
+                    <ul style="list-style: none;">
+                        <li>✅ Design Glassmorphism moderno</li>
+                        <li>✅ Animações suaves</li>
+                        <li>✅ Responsivo (mobile, tablet, desktop)</li>
+                        <li>✅ Slideshow de fotos da frota</li>
+                        <li>✅ Validação em tempo real</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="color: #667eea; margin-bottom: 10px;">Segurança (Demo)</h4>
+                    <ul style="list-style: none;">
+                        <li>✅ Validação de email com regex</li>
+                        <li>✅ Código de recuperação (6 dígitos)</li>
+                        <li>✅ Expiração de código (15 minutos)</li>
+                        <li>✅ Mínimo 6 caracteres para senha</li>
+                        <li>✅ Toggle de visibilidade de senha</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Aviso -->
+        <div class="warning" style="grid-column: 1 / -1; margin-top: 20px;">
+            <h3 style="margin-bottom: 10px;">⚠️ AVISO DE SEGURANÇA</h3>
+            <p><strong>ESTE SISTEMA É APENAS PARA DEMONSTRAÇÃO!</strong></p>
+            <p>Não use em produção sem implementar:</p>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>Criptografia de senhas (bcrypt)</li>
+                <li>Banco de dados real (MongoDB, PostgreSQL, etc.)</li>
+                <li>HTTPS obrigatório</li>
+                <li>Rate limiting contra força bruta</li>
+                <li>JWT para autenticação</li>
+                <li>Email real com nodemailer</li>
+                <li>Verificação de email</li>
+                <li>Logs de auditoria</li>
+            </ul>
+        </div>
+
+        <!-- Troubleshooting -->
+        <div class="card" style="grid-column: 1 / -1;">
+            <h2><span class="emoji">🔧</span>Solução de Problemas</h2>
+            
+            <h4 style="margin-top: 15px; color: #f44336;">❌ Erro: "Connection refused"</h4>
+            <p>O servidor não está rodando. Abra um terminal na pasta <code>server/</code> e execute:</p>
+            <div class="code">node server.js</div>
+
+            <h4 style="margin-top: 15px; color: #f44336;">❌ Erro CORS ao enviar formulário</h4>
+            <p>Verifique se o servidor está rodando. CORS está configurado para <code>localhost:3000</code></p>
+
+            <h4 style="margin-top: 15px; color: #f44336;">❌ Código de recuperação não funciona</h4>
+            <ul>
+                <li>Verifique se copiar o código corretamente (sensível a maiúsculas/minúsculas)</li>
+                <li>Código expira em 15 minutos, solicite um novo se necessário</li>
+                <li>Verifique o console do navegador para mensagens de erro</li>
+            </ul>
+
+            <h4 style="margin-top: 15px; color: #f44336;">❌ Senha não atualiza</h4>
+            <ul>
+                <li>Verifique permissões de arquivo em <code>server/users.json</code></li>
+                <li>Abra console do servidor para ver mensagens de erro</li>
+                <li>Verifique se o JSON está válido</li>
+            </ul>
+
+            <h4 style="margin-top: 15px; color: #f44336;">❌ Imagens de fundo não aparecem</h4>
+            <p>Verifique se a pasta <code>imagens/</code> existe e contém as fotos com os nomes corretos</p>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Sistema de Autenticação para Viação São Cristóvão</p>
+            <p style="font-size: 0.9em; margin-top: 10px;">Versão 1.0 | Desenvolvimento | 2024</p>
+        </div>
+    </div>
+</body>
+</html>

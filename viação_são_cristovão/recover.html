@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar Senha</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body { height: 100%; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(10,25,47,0.75), rgba(3,10,23,0.85));
+            color: #fff;
+            padding-right: 40px;
+        }
+
+        #background-slideshow {
+            position: fixed; inset: 0; z-index: -2;
+            background-size: cover; background-position: center;
+            filter: brightness(0.45) saturate(0.8) blur(2px);
+            transition: background-image 1s ease-in-out;
+        }
+
+        body::after {
+            content: ''; position: fixed; inset: 0; z-index: -1;
+            background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.35));
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(60px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .recover-container {
+            width: 360px; height: 85vh; max-width: calc(100% - 48px);
+            padding: 40px 28px; border-radius: 0;
+            background: linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.02));
+            border: 1px solid rgba(255,255,255,0.10); border-top: none; border-bottom: none; border-right: none;
+            box-shadow: -10px 0 36px rgba(2,6,23,0.65);
+            backdrop-filter: blur(4px) saturate(140%);
+            -webkit-backdrop-filter: blur(4px) saturate(140%);
+            text-align: center; z-index: 1; position: relative;
+            display: flex; flex-direction: column; justify-content: center; gap: 20px;
+            animation: slideInRight 0.6s ease-out;
+            overflow-y: auto;
+        }
+
+        h1 { color: #eaf6ff; font-size: 24px; margin-bottom: 10px; }
+        p { font-size: 14px; color: rgba(235,245,255,0.7); margin-bottom: 20px; }
+
+        .input-group { margin-bottom: 12px; text-align: left; }
+        .input-group label {
+            display: block; font-size: 13px; color: rgba(235,245,255,0.85); margin-bottom: 6px;
+        }
+
+        .input-wrapper {
+            display: flex; align-items: center; gap: 10px;
+            background: rgba(255,255,255,0.02); padding: 6px; border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.04);
+        }
+
+        .input-icon {
+            width: 40px; height: 40px; display:flex; align-items:center; justify-content:center;
+            border-radius: 8px; background: rgba(255,255,255,0.01); color: rgba(255,255,255,0.85);
+        }
+
+        .input-icon svg { width: 20px; height: 20px; fill: currentColor; }
+
+        input[type="email"] {
+            width: 100%; padding: 12px 14px; border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.03); color: #e9fbff; font-size: 15px;
+            outline: none; transition: all 0.18s ease;
+        }
+
+        input:focus {
+            border-color: rgba(165,130,230,0.7);
+            box-shadow: 0 6px 14px rgba(120,60,200,0.08);
+        }
+
+        .error-message { color: #ffb3b3; font-size: 14px; margin: 8px 0; display: none; }
+        .success-message { color: #a8ffb3; font-size: 14px; margin: 8px 0; display: none; }
+
+        button {
+            width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.04);
+            cursor: pointer; background: linear-gradient(90deg, #ffb3b3 0%, #ff6b6b 100%);
+            color: #2b0a0a; font-weight: 700; letter-spacing: 0.4px;
+            transition: transform 0.12s ease, box-shadow 0.12s ease;
+            box-shadow: 0 8px 22px rgba(180,50,50,0.12), inset 0 -2px 6px rgba(0,0,0,0.04);
+            position: relative; overflow: hidden;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+
+        button:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 14px 32px rgba(180,50,50,0.16); }
+        button:disabled { opacity: 0.7; cursor: not-allowed; }
+
+        .button-spinner { width: 16px; height: 16px; border: 2px solid rgba(0,0,0,0.2); border-top-color: #2b0a0a; border-radius: 50%; animation: spin 0.6s linear infinite; display: none; }
+        button:disabled .button-spinner { display: block; }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .back-link { margin-top: 20px; }
+        .back-link a { color: rgba(160,210,255,0.95); text-decoration: none; font-size: 13px; }
+        .back-link a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div id="background-slideshow"></div>
+
+    <div class="recover-container">
+        <h1>Recuperar Senha</h1>
+        <p>Digite seu e-mail para receber um código de recuperação</p>
+
+        <div id="error-message" class="error-message"></div>
+        <div id="success-message" class="success-message"></div>
+
+        <div class="input-group">
+            <label for="email">E-mail</label>
+            <div class="input-wrapper">
+                <span class="input-icon">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z" />
+                    </svg>
+                </span>
+                <input type="email" id="email" placeholder="Digite seu e-mail" required>
+            </div>
+        </div>
+
+        <button id="send-button" type="button">
+            <span class="button-spinner"></span>
+            Enviar Código
+        </button>
+
+        <div class="back-link">
+            <a href="login.html">← Voltar ao login</a>
+        </div>
+    </div>
+
+    <script>
+        const backgroundElement = document.getElementById('background-slideshow');
+        const imageUrls = [
+          'imagens/sao-cristovao-viacao-sao-cristovao-divinopolis-mercedes-benz-O-362_foto-acervo-vsc.jpg',
+          'imagens/viacao-sao-cristovao-divinopolis-marcopolo-III_foto-eugenio-ilzo.jpg',
+          'imagens/dssaocristovao1430.jpg',
+          'imagens/frota.jpg',
+          'imagens/VSC504.jpg',
+          'imagens/IMG_20190517_093219.jpg',
+          'imagens/dsc03318.jpg',
+          'imagens/40-1973.jpg',
+          'imagens/170-1979.jpg',
+          'imagens/2330.jpg',
+          'imagens/32-1967.jpg',
+          'imagens/vsc1550.jpg'
+        ];
+
+        function changeBackground() {
+            const randomIndex = Math.floor(Math.random() * imageUrls.length);
+            backgroundElement.style.backgroundImage = `url('${imageUrls[randomIndex]}')`;
+        }
+
+        changeBackground();
+        setInterval(changeBackground, 4500);
+
+        // Recuperação de senha
+        document.getElementById('send-button').addEventListener('click', async function () {
+            const email = document.getElementById('email').value.trim();
+            const errorMsg = document.getElementById('error-message');
+            const successMsg = document.getElementById('success-message');
+            const button = this;
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                errorMsg.textContent = 'Por favor, insira um e-mail válido.';
+                errorMsg.style.display = 'block';
+                successMsg.style.display = 'none';
+                return;
+            }
+
+            errorMsg.style.display = 'none';
+            button.disabled = true;
+
+            try {
+                const response = await fetch('http://localhost:3000/api/recover', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    successMsg.textContent = data.message;
+                    successMsg.style.display = 'block';
+                    errorMsg.style.display = 'none';
+                    
+                    // Redireciona para página de reset após 2 segundos
+                    setTimeout(() => {
+                        window.location.href = 'reset.html';
+                    }, 2000);
+                } else {
+                    errorMsg.textContent = data.message || 'Erro ao enviar código.';
+                    errorMsg.style.display = 'block';
+                    successMsg.style.display = 'none';
+                }
+            } catch (error) {
+                errorMsg.textContent = 'Erro de conexão com o servidor.';
+                errorMsg.style.display = 'block';
+                successMsg.style.display = 'none';
+            } finally {
+                button.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
