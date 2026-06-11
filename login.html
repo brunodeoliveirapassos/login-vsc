@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tela de Login</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html, body { height: 100%; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(10,25,47,0.75), rgba(3,10,23,0.85));
+            color: #fff;
+            padding-right: 40px;
+        }
+
+        /* Background slideshow */
+        #background-slideshow {
+            position: fixed; inset: 0; z-index: -2;
+            background-size: cover; background-position: center;
+            filter: brightness(0.45) saturate(0.8) blur(2px);
+            transition: background-image 1.8s ease-in-out;
+        }
+
+        /* subtle overlay for contrast */
+        body::after {
+            content: ''; position: fixed; inset: 0; z-index: -1;
+            background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.35));
+        }
+
+        @keyframes fadeInBackground { from { opacity: 0 } to { opacity: 1 } }
+
+        /* Animação de entrada */
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(60px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Glassmorphism card */
+        .login-container {
+            width: 360px; height: 85vh; max-width: calc(100% - 48px);
+            padding: 40px 20px; border-radius: 0; 
+            background: linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.02));
+            border: 1px solid rgba(255,255,255,0.10); border-top: none; border-bottom: none; border-right: none;
+            box-shadow: -10px 0 36px rgba(2,6,23,0.65);
+            backdrop-filter: blur(4px) saturate(140%);
+            -webkit-backdrop-filter: blur(4px) saturate(140%);
+            text-align: center; z-index: 1; position: relative;
+            display: flex; flex-direction: column; justify-content: center; gap: 20px;
+            animation: slideInRight 0.6s ease-out;
+            overflow-y: auto;
+        }
+
+        /* Esconde a barra de rolagem mantendo o scroll funcional */
+        .login-container::-webkit-scrollbar {
+            width: 0;
+        }
+
+        .login-container {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        @media (max-width: 768px) {
+            .login-container { width: 100%; height: 100vh; padding: 30px 20px; padding-right: 40px; }
+            body { padding-right: 0; }
+        }
+
+        .login-container h2 { color: #eaf6ff; margin-bottom: 14px; }
+
+        .logo { display:block; margin: 0 auto 14px; width: 80px; height: 80px; max-width: 80%; border-radius: 50%; object-fit: cover; box-shadow: 0 6px 16px rgba(0,0,0,0.3); }
+
+        .error-message { color: #ffb3b3; font-size: 14px; margin: 8px 0; }
+
+        .input-container { margin-bottom: 12px; text-align: left; }
+
+        .input-group { margin-bottom: 12px; text-align: left; }
+
+        .input-group label {
+            display: block; font-size: 13px; color: rgba(235,245,255,0.85); margin-bottom: 6px;
+        }
+
+        .input-wrapper {
+            display: flex; align-items: center; gap: 10px;
+            background: rgba(255,255,255,0.02); padding: 6px; border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.04);
+        }
+
+        .input-icon {
+            width: 40px; height: 40px; display:flex; align-items:center; justify-content:center;
+            border-radius: 8px; background: rgba(255,255,255,0.01); color: rgba(255,255,255,0.85); font-size: 18px;
+        }
+        .input-icon svg { width: 20px; height: 20px; display: block; fill: currentColor; }
+
+        .password-toggle { width: 32px; height: 32px; background: none; border: none; color: rgba(235,245,255,0.85); cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: color 0.18s ease; }
+        .password-toggle:hover { color: rgba(235,245,255,1); }
+
+        
+
+        input[type="email"], input[type="password"] {
+            width: 100%; padding: 12px 14px; border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.03); color: #e9fbff; font-size: 15px;
+            outline: none; transition: box-shadow 0.18s ease, border-color 0.18s ease, transform 0.08s ease, background 0.18s ease;
+            -webkit-appearance: none;
+        }
+
+        input:valid { background: rgba(100,255,150,0.05); border-color: rgba(100,255,150,0.2); }
+        input:invalid:not(:placeholder-shown) { background: rgba(255,100,100,0.05); border-color: rgba(255,100,100,0.2); }
+
+        input::placeholder { color: rgba(230,245,255,0.45); }
+
+        input:focus {
+            border-color: rgba(165,130,230,0.7);
+            box-shadow: 0 6px 14px rgba(120,60,200,0.08);
+            transform: translateY(-1px);
+        }
+
+        .options { margin: 12px 0 18px; display:flex; justify-content:space-between; align-items:center; gap:8px; }
+
+        .options a { color: rgba(160,210,255,0.95); text-decoration: none; font-size: 13px; }
+
+
+        .options label { font-size: 13px; color: rgba(215,235,255,0.85); display:flex; align-items:center; gap:8px; }
+
+        input[type="checkbox"] { width:16px; height:16px; accent-color: #bfa8ff; }
+
+        button {
+            position: relative; overflow: hidden;
+            width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.04); cursor: pointer;
+            background: linear-gradient(90deg, #ffb3b3 0%, #ff6b6b 100%);
+            color: #2b0a0a; font-weight: 700; letter-spacing: 0.4px; transition: transform 0.12s ease, box-shadow 0.12s ease;
+            box-shadow: 0 8px 22px rgba(180,50,50,0.12), inset 0 -2px 6px rgba(0,0,0,0.04);
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+
+        button:disabled { opacity: 0.7; cursor: not-allowed; }
+
+        .button-spinner { width: 16px; height: 16px; border: 2px solid rgba(0,0,0,0.2); border-top-color: #2b0a0a; border-radius: 50%; animation: spin 0.6s linear infinite; display: none; }
+        button:disabled .button-spinner { display: block; }
+        button:disabled i { display: none; }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        button:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 14px 32px rgba(180,50,50,0.16); }
+
+        button:active:not(:disabled) { transform: translateY(-1px); }
+
+        /* Ripple effect */
+        .ripple {
+            position: absolute; border-radius: 50%; transform: scale(0);
+            background: rgba(255,255,255,0.45); opacity: 0.9; pointer-events: none;
+            animation: ripple-effect 650ms ease-out;
+        }
+
+        @keyframes ripple-effect {
+            to { transform: scale(4); opacity: 0; }
+        }
+
+        button i { font-size: 16px; }
+    </style>
+    
+</head>
+<body>
+    <!-- Elemento de fundo com slideshow -->
+    <div id="background-slideshow"></div>
+
+    <div class="login-container">
+        <!-- Logo do sistema -->
+        <img src="viacao-sao-cristovao.png" alt="Logo do sistema" class="logo">
+
+        <!-- Mensagem de erro / sucesso -->
+        <div class="error-message" id="error-message" style="display: none;"></div>
+        <div id="success-message" style="display:none;color:#bff5c1;font-size:14px;margin:8px 0;"></div>
+
+        <!-- Campo para e-mail -->
+        <div class="input-group">
+            <label for="email">E-mail</label>
+            <div class="input-wrapper">
+                <span class="input-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z" />
+                    </svg>
+                </span>
+                <input type="email" id="email" placeholder="Digite seu E-mail" required>
+            </div>
+        </div>
+
+        <!-- Campo para senha -->
+        <div class="input-group">
+            <label for="password">Senha</label>
+            <div class="input-wrapper">
+                <span class="input-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M17 8V7a5 5 0 0 0-10 0v1H5a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1h-2zm-8-1a3 3 0 0 1 6 0v1H9V7zm8 5v5H7v-5h10z" />
+                    </svg>
+                </span>
+                <input type="password" id="password" placeholder="Digite sua Senha" required>
+                <button type="button" class="password-toggle" id="toggle-password" aria-label="Mostrar/esconder senha">👁️</button>
+            </div>
+        </div>
+
+        <!-- Check box para lembrar usuário -->
+        <div class="options">
+            <label>
+                <input type="checkbox" id="remember-me"> Lembrar-me
+            </label>
+            <a href="recover.html">Esqueceu sua senha?</a>
+        </div>
+
+        <!-- Botão de login -->
+        <button type="button" id="login-button">
+            <span class="button-spinner"></span>
+            <i></i> LOGIN
+        </button>
+    </div>
+
+    <script>
+        // Configuração do slideshow de fotos
+        const backgroundElement = document.getElementById('background-slideshow');
+        let currentImageIndex = 0;
+        const photoInterval = 4500; // Trocar foto a cada 3 segundos
+        
+        // Array com URLs de imagens aleatórias (usando Picsum Photos - gera imagens aleatórias)
+        
+        const imageUrls = [
+          'imagens/sao-cristovao-viacao-sao-cristovao-divinopolis-mercedes-benz-O-362_foto-acervo-vsc.jpg',
+          'imagens/viacao-sao-cristovao-divinopolis-marcopolo-III_foto-eugenio-ilzo.jpg',
+          'imagens/dssaocristovao1430.jpg',
+          'imagens/frota.jpg',
+          'imagens/VSC504.jpg',
+          'imagens/IMG_20190517_093219.jpg',
+          'imagens/dsc03318.jpg',
+          'imagens/40-1973.jpg',
+          'imagens/170-1979.jpg',
+          'imagens/2330.jpg',
+          'imagens/32-1967.jpg',
+          'imagens/1300CD.jpg',
+          'imagens/1370.jpg',
+          'imagens/75.jpg',
+          'imagens/vsc1550.jpg'
+       ];
+
+        function changeBackground() {
+            // Seleciona uma imagem aleatória
+            currentImageIndex = Math.floor(Math.random() * imageUrls.length);
+            const randomImage = imageUrls[currentImageIndex];
+            
+            // Aplica a imagem com transição
+            backgroundElement.style.backgroundImage = `url('${randomImage}')`;
+        }
+
+        // Inicializa com uma imagem
+        changeBackground();
+
+        // Muda a imagem em intervalos
+        setInterval(changeBackground, photoInterval);
+
+        // Toggle de mostrar/esconder senha
+        const togglePasswordBtn = document.getElementById('toggle-password');
+        const passwordInput = document.getElementById('password');
+        
+        togglePasswordBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            const isPassword = passwordInput.type === 'password';
+            passwordInput.type = isPassword ? 'text' : 'password';
+            togglePasswordBtn.textContent = isPassword ? '🙈' : '👁️';
+        });
+
+        // Validação em tempo real e "Lembrar-me" com localStorage
+        const emailInput = document.getElementById('email');
+        const rememberCheckbox = document.getElementById('remember-me');
+
+        // Carrega email armazenado se existir
+        window.addEventListener('load', function () {
+            const savedEmail = localStorage.getItem('savedEmail');
+            if (savedEmail) {
+                emailInput.value = savedEmail;
+                rememberCheckbox.checked = true;
+            }
+        });
+
+        // Validação de email em tempo real
+        emailInput.addEventListener('input', function () {
+            const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.value);
+            this.setAttribute('aria-invalid', !isValid && this.value !== '');
+        });
+
+        // Salvar email se "Lembrar-me" estiver marcado
+        rememberCheckbox.addEventListener('change', function () {
+            if (this.checked && emailInput.value) {
+                localStorage.setItem('savedEmail', emailInput.value);
+            } else {
+                localStorage.removeItem('savedEmail');
+            }
+        });
+
+        // Funcionalidade de login com servidor
+        document.getElementById('login-button').addEventListener('click', async function (e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const errorMessage = document.getElementById('error-message');
+            const button = this;
+
+            // Validação de e-mail com regex
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                errorMessage.style.display = 'block';
+                errorMessage.textContent = 'Por favor, insira um e-mail válido.';
+                return;
+            }
+
+            if (password === '') {
+                errorMessage.style.display = 'block';
+                errorMessage.textContent = 'A senha não pode estar vazia.';
+                return;
+            }
+
+            errorMessage.style.display = 'none';
+
+            // Desabilita botão durante requisição
+            button.disabled = true;
+
+            try {
+                // Requisição ao servidor: tenta HTTPS (3443) primeiro, depois HTTP (3000)
+                async function postToApi(path, payload) {
+                    const bases = ['https://localhost:3443', 'http://localhost:3000'];
+                    for (const base of bases) {
+                        try {
+                            const resp = await fetch(base + path, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify(payload),
+                                cache: 'no-store'
+                            });
+                            return resp;
+                        } catch (err) {
+                            // falhou com este endpoint; tenta o próximo
+                        }
+                    }
+                    throw new Error('Todos os endpoints falharam');
+                }
+
+                const response = await postToApi('/api/login', { email, password });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    errorMessage.style.display = 'none';
+                    const successMessage = document.getElementById('success-message');
+                    successMessage.style.display = 'block';
+                    successMessage.textContent = 'Login bem-sucedido! Bem-vindo, ' + data.user.name + '.';
+                    // Salva email se "Lembrar-me" estiver marcado
+                    if (rememberCheckbox.checked) {
+                        localStorage.setItem('savedEmail', email);
+                    }
+                    // Salva estado de login (simples) para acesso às páginas autenticadas
+                    localStorage.setItem('loggedUser', JSON.stringify(data.user));
+                    // Redireciona para página de compra após 1 segundo
+                    setTimeout(() => {
+                        window.location.href = 'purchase.html';
+                    }, 300);
+                } else {
+                    errorMessage.style.display = 'block';
+                    errorMessage.textContent = data.message || 'Erro ao fazer login.';
+                }
+            } catch (error) {
+                errorMessage.style.display = 'block';
+                errorMessage.textContent = 'Erro de conexão: servidor não está respondendo. Certifique-se de que o servidor está rodando em http://localhost:3000';
+                console.error('Erro:', error);
+            } finally {
+                // Reabilita botão
+                button.disabled = false;
+            }
+        });
+
+        // Ripple click effect for login button
+        (function () {
+            const btn = document.getElementById('login-button');
+            btn.addEventListener('click', function (e) {
+                const rect = btn.getBoundingClientRect();
+                const ripple = document.createElement('span');
+                ripple.className = 'ripple';
+                const size = Math.max(rect.width, rect.height) * 1.2;
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+                ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+                btn.appendChild(ripple);
+                setTimeout(() => { ripple.remove(); }, 700);
+            });
+        })();
+    </script>
+</body>
+</html>
